@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #6366F1;
+  --secondary: #818CF8;
+  --cta: #10B981;
+  --background: #F5F3FF;
+  --text: #1E1B4B;
+}
+
+body {
+  @apply bg-background text-text font-body;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading font-bold;
+}
+
+.glass {
+  @apply bg-white/20 backdrop-blur-md border border-white/30;
+}
+
+.glass-dark {
+  @apply bg-black/10 backdrop-blur-md border border-white/10;
+}
+
+.btn-primary {
+  @apply bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-secondary transition-all duration-300 shadow-lg hover:shadow-primary/30 active:scale-95;
+}
+
+.btn-cta {
+  @apply bg-cta text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-cta/30 active:scale-95;
+}
+
+.section-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24;
+}
+
+/* 3D and Perspective Effects */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.tilt-3d {
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.tilt-3d:hover {
+  transform: rotateX(5deg) rotateY(5deg) scale(1.02);
+}
+
+/* Admin Utilities */
+.form-input {
+  width: 100%;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+.form-input:focus {
+  outline: none;
+  border-color: #6366F1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
