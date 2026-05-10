@@ -39,7 +39,7 @@ const FloatingSocials = () => {
         >
           {/* WhatsApp Button */}
           <motion.a 
-            href="#" 
+            href="https://wa.me/917908178513" 
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.1, rotate: 5 }}
@@ -56,7 +56,7 @@ const FloatingSocials = () => {
 
           {/* Instagram Button */}
           <motion.a 
-            href="#" 
+            href="https://www.instagram.com/ssic_barddhaman/" 
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.1, rotate: -5 }}

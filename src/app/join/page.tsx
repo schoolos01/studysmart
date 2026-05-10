@@ -17,7 +17,7 @@ const perks = [
 
 export default function JoinPage() {
   return (
-    <div className="pb-24">
+    <>
       <section className="pt-40 pb-24 relative overflow-hidden">
         {/* Background decorations */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
@@ -84,6 +84,6 @@ export default function JoinPage() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }

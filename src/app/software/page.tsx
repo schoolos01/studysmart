@@ -20,7 +20,7 @@ const features = [
 
 export default function SoftwarePage() {
   return (
-    <div className="pb-24">
+    <>
       {/* Hero */}
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-20 bg-background overflow-hidden relative">
         <div className="section-container relative z-10 text-center px-6 sm:px-8">
@@ -99,7 +99,7 @@ export default function SoftwarePage() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
 

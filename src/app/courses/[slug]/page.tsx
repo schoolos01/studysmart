@@ -59,7 +59,7 @@ export default function CourseDetailPage() {
   }
 
   return (
-    <div className="pb-24">
+    <>
       {/* Hero Section */}
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-20 bg-background overflow-hidden relative">
         <div className="section-container relative z-10 px-6 sm:px-8">
@@ -224,6 +224,16 @@ export default function CourseDetailPage() {
                   ))}
                 </ul>
               </div>
+              
+              {course.paymentUrl && (
+                <div className="flex justify-center pt-4">
+                  <EnrollModal 
+                    courseName={course.title} 
+                    courseSlug={course.slug}
+                    paymentUrl={course.paymentUrl}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -354,6 +364,6 @@ export default function CourseDetailPage() {
         <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-1/4 h-1/2 bg-cta/5 skew-x-12 -translate-x-1/3" />
       </section>
-    </div>
+    </>
   );
 }

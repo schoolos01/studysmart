@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
+import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
@@ -27,6 +28,32 @@ export async function POST(request: Request) {
       source: body.source || 'contact_form',
       createdAt: new Date(),
     });
+
+    // Send email notification
+    try {
+      const port = Number(process.env.EMAIL_PORT) || 465;
+      const transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: port,
+        secure: port === 465, // true for 465, false for 587 and others
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: 'hiranmoy.goswami17@gmail.com',
+        subject: `New Lead: ${body.courseName || body.type}`,
+        text: `New lead received!\n\nDetails:\nName: ${body.name || 'N/A'}\nEmail: ${body.email}\nPhone: ${body.phone}\nMessage: ${body.message || 'N/A'}\nCourse/Type: ${body.courseName || body.type}\nSource: ${body.source}`,
+      };
+
+      await transporter.sendMail(mailOptions);
+    } catch (mailError) {
+      console.error('Failed to send email:', mailError);
+      // We don't want to fail the whole request if email fails
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

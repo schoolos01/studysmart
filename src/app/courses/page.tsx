@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function CoursesPage() {
   return (
-    <div className="pb-24">
+    <>
       {/* Header */}
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-20 bg-background overflow-hidden relative">
         <div className="section-container relative z-10 text-center px-6 sm:px-8">
@@ -48,6 +48,6 @@ export default function CoursesPage() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }

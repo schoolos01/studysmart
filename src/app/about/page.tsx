@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="pb-24">
+    <>
       {/* Hero */}
       <section className="pt-40 sm:pt-56 pb-20 sm:pb-32 bg-background overflow-hidden relative">
         <div className="section-container relative z-10 px-6 sm:px-8">
@@ -26,12 +26,12 @@ export default function AboutPage() {
                 to a comprehensive EdTech ecosystem serving thousands of students and several partner schools.
               </p>
             </div>
-            <div className="relative aspect-square rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-2xl border border-white/40 bg-white group max-w-md mx-auto">
+            <div className="relative aspect-[4/5] w-full rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-2xl border border-white/40 bg-slate-100 group max-w-md mx-auto">
               <Image
-                src="/SSIC_redesigned_logo.png"
-                alt="Study Smart Innovations Logo"
+                src="/ceo-profile.jpg"
+                alt="Hiranmoy Goswami, CEO"
                 fill
-                className="object-contain group-hover:scale-105 transition-transform duration-700 p-8 sm:p-12"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
           </div>
@@ -113,6 +113,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }

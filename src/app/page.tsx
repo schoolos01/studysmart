@@ -5,7 +5,7 @@ import SaaSPreview from '@/components/SaaSPreview';
 
 export default function Home() {
   return (
-    <div className="pb-24">
+    <>
       <Hero />
       
       <FeaturedCourses />
@@ -29,6 +29,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }

@@ -27,6 +27,7 @@ export interface CourseData {
   image: string;
   startingDate?: string;
   type?: 'recorded' | 'hybrid' | 'live';
+  paymentUrl?: string;
 }
 
 export const coursesData: Record<string, CourseData> = {
@@ -39,7 +40,9 @@ export const coursesData: Record<string, CourseData> = {
     originalPrice: "₹1,800",
     discount: "33% OFF",
     type: 'live',
-    liveClassInfo: "Weekly 2 classes - Saturday & Sunday 8pm",
+    liveClassInfo: "Saturday and Sunday both, 8 PM to 9 PM.",
+    startingDate: "Batch 2 is starting from May 16",
+    paymentUrl: "https://pages.razorpay.com/python-online-course",
     modules: [
       { title: "Python Setup & Logic Building", desc: "Weeks 1-3: Variables, Operators, Logic Building (If/Else, Loops). Base strong toh shob strong!" },
       { title: "Data Structures & Mastering Tools", desc: "Weeks 4-6: Functions, Strings, Lists, Tuples, Sets & Dictionaries." },
@@ -81,7 +84,7 @@ export const coursesData: Record<string, CourseData> = {
         "Simplifying complex topics like pointers and data structures",
         "Helped 1000+ students gain confidence and ace interviews"
       ],
-      image: "https://media.licdn.com/dms/image/v2/D4D03AQHSVP7PRyl6lg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1695616193036?e=1778112000&v=beta&t=nt50cRLiXi7dmRUyIWjJyKj2pNDufNdOHSevZRAf3hk",
+      image: "/ceo-raw.jpg",
       whyLearnFromMe: [
         "Practical over theoretical approach",
         "Real-life examples for every concept",
@@ -96,12 +99,13 @@ export const coursesData: Record<string, CourseData> = {
     subtitle: "Learn Java from Zero to Hero — in Simple Benglish!",
     description: "Are you a college or school student struggling with Java? Confused in classes? Want to understand Java easily and practically? This is a fully structured, beginner-friendly Java course in Benglish, designed specially for college students of West Bengal.",
     duration: "2 Months",
-    startingDate: "1st February, 2026",
+    startingDate: "Currently, Batch 2 is running",
     price: "₹499",
     originalPrice: "₹699",
     discount: "16% OFF",
     type: 'recorded',
-    liveClassInfo: "Live Doubt Clearing Class — Every Sunday 7:30 PM",
+    liveClassInfo: "Sunday 7 PM to 8 PM.",
+    paymentUrl: "https://pages.razorpay.com/java-online-course",
     modules: [
       { title: "Java Foundations", desc: "Introduction to Java, Objects, Classes, and OOP concepts." },
       { title: "Logic & Control", desc: "Data Types, Operators, Conditional Logic, and Loops." },
@@ -143,7 +147,7 @@ export const coursesData: Record<string, CourseData> = {
         "Simplifying complex topics for beginners",
         "Helped 1000+ students ace interviews"
       ],
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400",
+      image: "/ceo-raw.jpg",
       whyLearnFromMe: [
         "Practical and real-life examples",
         "Student-verified easy teaching style",
@@ -162,7 +166,9 @@ export const coursesData: Record<string, CourseData> = {
     originalPrice: "₹699",
     discount: "16% OFF",
     type: 'hybrid',
-    liveClassInfo: "Live Doubt Clearing Class — Every Saturday 7:00 PM",
+    liveClassInfo: "Online live class at every Saturday 7 PM to 8 PM.",
+    startingDate: "Currently, Batch 5 is running",
+    paymentUrl: "https://pages.razorpay.com/c-programming-course-in-bangla",
     modules: [
       { title: "C Basics & Logic", desc: "Variables, operators, data types, and if/else conditions." },
       { title: "Loops & Arrays", desc: "while, do-while, for loops, and hands-on coding with Arrays & Strings." },
@@ -205,7 +211,7 @@ export const coursesData: Record<string, CourseData> = {
         "Specializes in simplifying pointers and data structures",
         "Helped 1000+ students gain confidence"
       ],
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400",
+      image: "/ceo-raw.jpg",
       whyLearnFromMe: [
         "Practical, example-led teaching",
         "Easy to understand explanations",

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Cpu, ShieldCheck, Rocket, Zap, Users, BarChart } from 'lucide-react';
 
 export const metadata = {
@@ -12,27 +13,30 @@ const solutions = [
     title: "Robotics & AI Workshops",
     problem: "Outdated technology curriculum in schools.",
     solution: "Interactive, hands-on workshops using real robots and AI kits.",
-    outcome: "Students building their own prototypes and thinking logically."
+    outcome: "Students building their own prototypes and thinking logically.",
+    image: "/robotics-workshop.jpg"
   },
   {
     icon: <ShieldCheck className="h-8 w-8" />,
     title: "STEM Lab Setup",
     problem: "Lack of infrastructure for practical learning.",
     solution: "Full end-to-end setup of modern STEM labs with hardware & software.",
-    outcome: "Permanent hub of innovation within the school premises."
+    outcome: "Permanent hub of innovation within the school premises.",
+    image: "/lab-setup.jpg"
   },
   {
     icon: <Users className="h-8 w-8" />,
     title: "Teacher Training",
     problem: "Teachers feeling overwhelmed by new technology.",
     solution: "Certifed training programs to empower educators with tech-pedagogy.",
-    outcome: "Educators confidently leading future-ready classrooms."
+    outcome: "Educators confidently leading future-ready classrooms.",
+    image: "/teacher-training.jpg"
   }
 ];
 
 export default function SchoolsPage() {
   return (
-    <div className="pb-24">
+    <>
       {/* Hero */}
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-20 bg-background overflow-hidden relative">
         <div className="section-container relative z-10 text-center px-6 sm:px-8">
@@ -48,6 +52,25 @@ export default function SchoolsPage() {
               Book a Free School Demo
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Special Package Highlights */}
+      <section className="py-12 bg-text text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/20 blur-[100px] rounded-full translate-x-1/2"></div>
+        <div className="section-container relative z-10 px-6 sm:px-8 text-center">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-white/10 text-white text-xs font-bold mb-4 border border-white/20 uppercase tracking-widest">
+            Special Package
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">
+            Robotics Exhibition Package
+          </h2>
+          <p className="text-white/70 max-w-2xl mx-auto mb-8 text-sm sm:text-base">
+            Get 50 students trained to build 10 functional robotics projects over 4 sessions, complete with manuals and hardware. Perfect for your upcoming science exhibition!
+          </p>
+          <Link href="/services/robotics-exhibition" className="inline-block bg-primary text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-white hover:text-text transition-colors">
+            View Package Details →
+          </Link>
         </div>
       </section>
 
@@ -88,16 +111,20 @@ export default function SchoolsPage() {
                   </div>
                 </div>
                 
-                <div className="flex-1 w-full aspect-video rounded-[2rem] sm:rounded-3xl bg-slate-100 overflow-hidden shadow-xl sm:shadow-2xl relative">
-                  <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-12 text-center text-text/40 font-heading italic text-sm sm:text-base">
-                    [Visual representation of {item.title}]
-                  </div>
+                <div className="flex-1 w-full aspect-[3/2] rounded-[2rem] sm:rounded-3xl bg-slate-100 overflow-hidden shadow-xl sm:shadow-2xl relative">
+                  <Image 
+                    src={item.image} 
+                    alt={item.title} 
+                    fill 
+                    className="object-cover object-center"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
