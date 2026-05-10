@@ -70,7 +70,7 @@ const Hero = () => {
             initial={{ opacity: 0, scale: 0.8, rotateX: 10 }}
             animate={{ opacity: 1, scale: 1, rotateX: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="relative perspective-1000 hidden lg:block"
+            className="relative perspective-1000 mt-12 lg:mt-0"
           >
             <div className="preserve-3d tilt-3d">
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border border-white/30 transform-gpu rotate-[-2deg]">
