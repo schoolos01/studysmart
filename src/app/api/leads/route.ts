@@ -23,6 +23,11 @@ export async function POST(request: Request) {
       phone: body.phone,
       message: body.message || null,
       type: body.type || 'contact',
+      persona: body.persona || 'student',
+      schoolName: body.schoolName || null,
+      city: body.city || null,
+      designation: body.designation || null,
+      interest: body.interest || null,
       courseName: body.courseName || null,
       courseSlug: body.courseSlug || null,
       source: body.source || 'contact_form',
@@ -35,7 +40,7 @@ export async function POST(request: Request) {
       const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: port,
-        secure: port === 465, // true for 465, false for 587 and others
+        secure: port === 465,
         auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASS,
@@ -44,9 +49,19 @@ export async function POST(request: Request) {
 
       const mailOptions = {
         from: process.env.EMAIL_USER,
-        to: 'hiranmoy.goswami17@gmail.com',
-        subject: `New Lead: ${body.courseName || body.type}`,
-        text: `New lead received!\n\nDetails:\nName: ${body.name || 'N/A'}\nEmail: ${body.email}\nPhone: ${body.phone}\nMessage: ${body.message || 'N/A'}\nCourse/Type: ${body.courseName || body.type}\nSource: ${body.source}`,
+        to: process.env.EMAIL_USER,
+        subject: `New ${body.persona || 'Lead'}: ${body.name}`,
+        text: `New lead received!\n\n` +
+          `Persona: ${body.persona || 'Student'}\n` +
+          `Name: ${body.name}\n` +
+          `Email: ${body.email}\n` +
+          `Phone: ${body.phone}\n` +
+          (body.schoolName ? `School: ${body.schoolName}\n` : '') +
+          (body.city ? `City: ${body.city}\n` : '') +
+          (body.designation ? `Designation: ${body.designation}\n` : '') +
+          (body.interest ? `Interest: ${body.interest}\n` : '') +
+          `Message: ${body.message || 'N/A'}\n` +
+          `Source: ${body.source}`,
       };
 
       await transporter.sendMail(mailOptions);

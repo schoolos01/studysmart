@@ -66,29 +66,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Stats / Achievements */}
-      <section className="py-16 sm:py-24 bg-text text-white">
-        <div className="section-container px-6 sm:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 text-center">
-            <div>
-              <div className="text-3xl sm:text-5xl font-heading font-bold text-primary mb-2">5+</div>
-              <div className="text-white/60 text-xs sm:text-sm uppercase tracking-widest">Years of Excellence</div>
-            </div>
-            <div>
-              <div className="text-3xl sm:text-5xl font-heading font-bold text-primary mb-2">10k+</div>
-              <div className="text-white/60 text-xs sm:text-sm uppercase tracking-widest">Students Trained</div>
-            </div>
-            <div>
-              <div className="text-3xl sm:text-5xl font-heading font-bold text-primary mb-2">50+</div>
-              <div className="text-white/60 text-xs sm:text-sm uppercase tracking-widest">Partner Schools</div>
-            </div>
-            <div>
-              <div className="text-3xl sm:text-5xl font-heading font-bold text-primary mb-2">100+</div>
-              <div className="text-white/60 text-xs sm:text-sm uppercase tracking-widest">Expert Mentors</div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Core Values */}
       <section className="py-16 sm:py-24 bg-background">

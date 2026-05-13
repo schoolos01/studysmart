@@ -80,9 +80,9 @@ export const coursesData: Record<string, CourseData> = {
       name: "H. Goswami",
       role: "Educator & Software Engineer | CEP on AI ML IIT Delhi",
       bio: [
-        "6+ years of hands-on software development experience",
+        "Experienced software development professional",
         "Simplifying complex topics like pointers and data structures",
-        "Helped 1000+ students gain confidence and ace interviews"
+        "Empowering students to gain confidence and ace interviews"
       ],
       image: "/ceo-raw.jpg",
       whyLearnFromMe: [
@@ -143,9 +143,9 @@ export const coursesData: Record<string, CourseData> = {
       name: "H. Goswami",
       role: "Educator & Software Engineer | CEP on AI ML IIT Delhi",
       bio: [
-        "6+ years of hands-on software development experience",
+        "Experienced software development professional",
         "Simplifying complex topics for beginners",
-        "Helped 1000+ students ace interviews"
+        "Empowering students to ace technical interviews"
       ],
       image: "/ceo-raw.jpg",
       whyLearnFromMe: [
@@ -207,9 +207,9 @@ export const coursesData: Record<string, CourseData> = {
       name: "H. Goswami",
       role: "Educator & Software Engineer",
       bio: [
-        "6+ years of hands-on software development experience",
+        "Experienced software development professional",
         "Specializes in simplifying pointers and data structures",
-        "Helped 1000+ students gain confidence"
+        "Empowering students to gain confidence"
       ],
       image: "/ceo-raw.jpg",
       whyLearnFromMe: [

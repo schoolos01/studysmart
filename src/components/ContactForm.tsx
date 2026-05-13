@@ -5,10 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle2, User, Mail, Phone, MessageSquare, Loader2, AlertCircle } from 'lucide-react';
 
 interface ContactFormProps {
-  type?: 'contact' | 'demo' | 'course' | 'schools';
+  type?: 'contact' | 'demo' | 'course' | 'schools' | 'join';
   courseName?: string;
   title?: string;
   subtitle?: string;
+  initialPersona?: 'student' | 'school';
 }
 
 function validateEmail(email: string) {
@@ -20,9 +21,19 @@ function validatePhone(phone: string) {
   return /^[+]?[0-9]{7,15}$/.test(cleaned);
 }
 
-const ContactForm = ({ type = 'contact', courseName, title = 'Get in Touch', subtitle }: ContactFormProps) => {
+const ContactForm = ({ type = 'contact', courseName, title, subtitle, initialPersona = 'student' }: ContactFormProps) => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const [persona, setPersona] = useState<'student' | 'school'>(initialPersona);
+  const [form, setForm] = useState({ 
+    name: '', 
+    email: '', 
+    phone: '', 
+    message: '',
+    schoolName: '',
+    city: '',
+    designation: '',
+    interest: ''
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
@@ -34,12 +45,16 @@ const ContactForm = ({ type = 'contact', courseName, title = 'Get in Touch', sub
     }
     if (field === 'phone') {
       if (!value.trim()) return 'Phone number is required';
-      if (!validatePhone(value)) return 'Enter a valid phone number (7–15 digits)';
+      if (!validatePhone(value)) return 'Enter a valid phone number';
+    }
+    if (persona === 'school') {
+      if (field === 'schoolName' && !value.trim()) return 'School name is required';
+      if (field === 'city' && !value.trim()) return 'City is required';
     }
     return '';
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setForm(prev => ({ ...prev, [id]: value }));
     if (touched[id]) {
@@ -47,32 +62,29 @@ const ContactForm = ({ type = 'contact', courseName, title = 'Get in Touch', sub
     }
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setTouched(prev => ({ ...prev, [id]: true }));
     setErrors(prev => ({ ...prev, [id]: validate(id, value) }));
   };
 
-  const isValid = () => {
-    return (
-      form.name.trim() &&
-      validateEmail(form.email) &&
-      validatePhone(form.phone)
-    );
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Touch all fields to show errors
-    const allTouched = { name: true, email: true, phone: true };
-    setTouched(allTouched);
-    const newErrors = {
-      name: validate('name', form.name),
-      email: validate('email', form.email),
-      phone: validate('phone', form.phone),
-    };
+    const fieldsToValidate = ['name', 'email', 'phone'];
+    if (persona === 'school') fieldsToValidate.push('schoolName', 'city');
+    
+    const newErrors: Record<string, string> = {};
+    const newTouched: Record<string, boolean> = {};
+    
+    fieldsToValidate.forEach(f => {
+      newErrors[f] = validate(f, (form as any)[f]);
+      newTouched[f] = true;
+    });
+
     setErrors(newErrors);
+    setTouched(newTouched);
+    
     if (Object.values(newErrors).some(Boolean)) return;
 
     setStatus('loading');
@@ -83,14 +95,14 @@ const ContactForm = ({ type = 'contact', courseName, title = 'Get in Touch', sub
         body: JSON.stringify({
           ...form,
           type,
-          courseName: courseName || null,
-          source: 'contact_form',
+          persona,
+          source: type === 'join' ? 'join_page' : 'contact_form',
           createdAt: new Date().toISOString(),
         }),
       });
       if (res.ok) {
         setStatus('success');
-        setForm({ name: '', email: '', phone: '', message: '' });
+        setForm({ name: '', email: '', phone: '', message: '', schoolName: '', city: '', designation: '', interest: '' });
         setTouched({});
         setErrors({});
       } else {
@@ -115,12 +127,12 @@ const ContactForm = ({ type = 'contact', courseName, title = 'Get in Touch', sub
         >
           <CheckCircle2 className="h-10 w-10 text-white" />
         </motion.div>
-        <h3 className="text-2xl font-bold mb-3">Message Sent! 🎉</h3>
+        <h3 className="text-2xl font-bold mb-3">Submission Successful! 🎉</h3>
         <p className="text-text/60 mb-8 max-w-sm mx-auto">
-          Thank you for reaching out. Our team will get back to you within 24 hours.
+          Thank you for choosing Study Smart Innovations. Our team will contact you within 24 hours.
         </p>
         <button onClick={() => setStatus('idle')} className="text-primary font-bold hover:underline text-sm">
-          Send another message →
+          Send another request →
         </button>
       </motion.div>
     );
@@ -134,53 +146,40 @@ const ContactForm = ({ type = 'contact', courseName, title = 'Get in Touch', sub
     }`;
 
   return (
-    <div className="glass p-8 md:p-12 rounded-[2.5rem] shadow-xl border border-white/50 backdrop-blur-2xl">
+    <div id="join-form" className="glass p-8 md:p-12 rounded-[2.5rem] shadow-xl border border-white/50 backdrop-blur-2xl">
       {title && <h3 className="text-3xl mb-2 font-heading">{title}</h3>}
       {subtitle && <p className="text-text/60 mb-8">{subtitle}</p>}
-      {!subtitle && <div className="mb-8" />}
+      
+      {/* Persona Toggle */}
+      <div className="flex p-1.5 bg-black/5 rounded-2xl mb-10 w-full max-w-sm mx-auto">
+        <button
+          onClick={() => setPersona('student')}
+          className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all ${persona === 'student' ? 'bg-white shadow-md text-primary' : 'text-text/40 hover:text-text/60'}`}
+        >
+          For Students
+        </button>
+        <button
+          onClick={() => setPersona('school')}
+          className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all ${persona === 'school' ? 'bg-white shadow-md text-primary' : 'text-text/40 hover:text-text/60'}`}
+        >
+          For Schools
+        </button>
+      </div>
 
       <form onSubmit={handleSubmit} noValidate className="space-y-6">
-        {/* Name */}
-        <div className="space-y-1">
-          <label htmlFor="name" className="text-sm font-bold text-text/50 ml-1">Full Name</label>
-          <div className="relative">
-            <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-text/30" />
-            <input
-              type="text" id="name"
-              value={form.name} onChange={handleChange} onBlur={handleBlur}
-              className={inputClass('name')} placeholder="John Doe"
-            />
-          </div>
-          <AnimatePresence>
-            {errors.name && touched.name && (
-              <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                className="text-red-500 text-xs flex items-center gap-1 ml-1 mt-1">
-                <AlertCircle size={11} /> {errors.name}
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Email */}
+          {/* Name */}
           <div className="space-y-1">
-            <label htmlFor="email" className="text-sm font-bold text-text/50 ml-1">Email Address</label>
+            <label htmlFor="name" className="text-sm font-bold text-text/50 ml-1">Full Name</label>
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-text/30" />
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-text/30" />
               <input
-                type="email" id="email"
-                value={form.email} onChange={handleChange} onBlur={handleBlur}
-                className={inputClass('email')} placeholder="john@example.com"
+                type="text" id="name"
+                value={form.name} onChange={handleChange} onBlur={handleBlur}
+                className={inputClass('name')} placeholder="John Doe"
               />
             </div>
-            <AnimatePresence>
-              {errors.email && touched.email && (
-                <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                  className="text-red-500 text-xs flex items-center gap-1 ml-1 mt-1">
-                  <AlertCircle size={11} /> {errors.email}
-                </motion.p>
-              )}
-            </AnimatePresence>
+            {errors.name && touched.name && <p className="text-red-500 text-[10px] ml-1 mt-1 font-bold uppercase tracking-wider">{errors.name}</p>}
           </div>
 
           {/* Phone */}
@@ -194,35 +193,87 @@ const ContactForm = ({ type = 'contact', courseName, title = 'Get in Touch', sub
                 className={inputClass('phone')} placeholder="+91 99999 00000"
               />
             </div>
-            <AnimatePresence>
-              {errors.phone && touched.phone && (
-                <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
-                  className="text-red-500 text-xs flex items-center gap-1 ml-1 mt-1">
-                  <AlertCircle size={11} /> {errors.phone}
-                </motion.p>
-              )}
-            </AnimatePresence>
+            {errors.phone && touched.phone && <p className="text-red-500 text-[10px] ml-1 mt-1 font-bold uppercase tracking-wider">{errors.phone}</p>}
           </div>
         </div>
 
-        {/* Message */}
+        {/* Email */}
         <div className="space-y-1">
-          <label htmlFor="message" className="text-sm font-bold text-text/50 ml-1">Your Message</label>
+          <label htmlFor="email" className="text-sm font-bold text-text/50 ml-1">Email Address</label>
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-text/30" />
+            <input
+              type="email" id="email"
+              value={form.email} onChange={handleChange} onBlur={handleBlur}
+              className={inputClass('email')} placeholder="john@example.com"
+            />
+          </div>
+          {errors.email && touched.email && <p className="text-red-500 text-[10px] ml-1 mt-1 font-bold uppercase tracking-wider">{errors.email}</p>}
+        </div>
+
+        {persona === 'school' ? (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+            <div className="space-y-1">
+              <label htmlFor="schoolName" className="text-sm font-bold text-text/50 ml-1">School Name</label>
+              <div className="relative">
+                <input
+                  type="text" id="schoolName"
+                  value={form.schoolName} onChange={handleChange} onBlur={handleBlur}
+                  className={inputClass('schoolName')} placeholder="St. Mary's School"
+                />
+              </div>
+              {errors.schoolName && touched.schoolName && <p className="text-red-500 text-[10px] ml-1 mt-1 font-bold uppercase tracking-wider">{errors.schoolName}</p>}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-1">
+                <label htmlFor="city" className="text-sm font-bold text-text/50 ml-1">City</label>
+                <input
+                  type="text" id="city"
+                  value={form.city} onChange={handleChange} onBlur={handleBlur}
+                  className={inputClass('city')} placeholder="Kolkata"
+                />
+              </div>
+              <div className="space-y-1">
+                <label htmlFor="designation" className="text-sm font-bold text-text/50 ml-1">Designation</label>
+                <select id="designation" value={form.designation} onChange={handleChange} className={inputClass('designation')}>
+                  <option value="">Select Role</option>
+                  <option value="Principal">Principal</option>
+                  <option value="Administrator">Administrator</option>
+                  <option value="Teacher">Teacher</option>
+                  <option value="Trustee">Trustee / Owner</option>
+                </select>
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-1">
+            <label htmlFor="interest" className="text-sm font-bold text-text/50 ml-1">Interested In</label>
+            <select id="interest" value={form.interest} onChange={handleChange} className={inputClass('interest')}>
+              <option value="">Select Interest</option>
+              <option value="Python Programming">Python Programming</option>
+              <option value="Java Development">Java Development</option>
+              <option value="Robotics Workshops">Robotics Workshops</option>
+              <option value="Artificial Intelligence">Artificial Intelligence</option>
+              <option value="Other">Other</option>
+            </select>
+          </motion.div>
+        )}
+
+        <div className="space-y-1">
+          <label htmlFor="message" className="text-sm font-bold text-text/50 ml-1">Your Message (Optional)</label>
           <div className="relative">
             <MessageSquare className="absolute left-4 top-4 h-4 w-4 text-text/30" />
             <textarea
-              id="message" rows={4}
+              id="message" rows={3}
               value={form.message} onChange={handleChange}
               className="w-full bg-white/60 border border-black/5 rounded-2xl px-5 py-4 pl-12 focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all resize-none font-medium placeholder:text-text/30"
-              placeholder="Tell us what you are looking for..."
+              placeholder="Tell us more about your requirements..."
             />
           </div>
         </div>
 
         {status === 'error' && (
-          <p className="text-red-500 text-sm text-center font-medium flex items-center justify-center gap-2">
-            <AlertCircle size={16} /> Something went wrong. Please try again.
-          </p>
+          <p className="text-red-500 text-sm text-center font-bold">Something went wrong. Please try again.</p>
         )}
 
         <motion.button
@@ -230,12 +281,12 @@ const ContactForm = ({ type = 'contact', courseName, title = 'Get in Touch', sub
           disabled={status === 'loading'}
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
-          className="w-full btn-primary py-4 flex items-center justify-center gap-2 group disabled:opacity-70"
+          className="w-full btn-primary py-5 flex items-center justify-center gap-2 group disabled:opacity-70 text-lg"
         >
           {status === 'loading' ? (
-            <><Loader2 className="h-5 w-5 animate-spin" /> Sending...</>
+            <><Loader2 className="h-5 w-5 animate-spin" /> Processing...</>
           ) : (
-            <><Send className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" /> Send Message</>
+            <><Send className="h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /> Send Inquiry</>
           )}
         </motion.button>
       </form>
