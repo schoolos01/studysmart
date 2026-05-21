@@ -92,7 +92,7 @@ export const coursesData: Record<string, CourseData> = {
         "Ei course e Python tomar favourite subject hoye jabe"
       ]
     },
-    image: "/hero_bengali.png"
+    image: "/hero_bengali.jpg"
   },
   java: {
     title: "Java Programming Course in Benglish",

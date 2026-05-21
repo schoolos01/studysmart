@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from '@next/third-parties/google';
 import "./globals.css";
 import TrackingProvider from "@/components/TrackingProvider";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
             {children}
           </GlobalShell>
         </TrackingProvider>
+        <GoogleAnalytics gaId="G-CY976WQWDT" />
       </body>
     </html>
   );

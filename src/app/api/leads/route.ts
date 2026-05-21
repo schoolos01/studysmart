@@ -49,8 +49,8 @@ export async function POST(request: Request) {
 
       const mailOptions = {
         from: process.env.EMAIL_USER,
-        to: process.env.EMAIL_USER,
-        subject: `New ${body.persona || 'Lead'}: ${body.name}`,
+        to: `${process.env.EMAIL_USER}, hirugoswami2015@gmail.com`,
+        subject: `New ${body.persona || 'Lead'}: ${body.name || body.email}`,
         text: `New lead received!\n\n` +
           `Persona: ${body.persona || 'Student'}\n` +
           `Name: ${body.name}\n` +

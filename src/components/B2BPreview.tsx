@@ -38,7 +38,7 @@ const B2BPreview = () => {
             <div className="relative group perspective-1000">
               <div className="preserve-3d tilt-3d rounded-[2rem] overflow-hidden shadow-2xl border border-white/40">
                 <Image 
-                  src="/b2b_bengali.png" 
+                  src="/b2b_bengali.jpg" 
                   alt="Bengali Students in Robotics Lab" 
                   width={800} 
                   height={600}

@@ -75,7 +75,7 @@ const Hero = () => {
             <div className="preserve-3d tilt-3d">
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border border-white/30 transform-gpu rotate-[-2deg]">
                 <Image
-                  src="/hero_bengali.png"
+                  src="/hero_bengali.jpg"
                   alt="Bengali Child Learning Coding"
                   width={800}
                   height={600}

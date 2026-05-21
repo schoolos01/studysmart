@@ -24,11 +24,27 @@ const LeadForm = ({ type, courseName, title }: LeadFormProps) => {
     e.preventDefault();
     setStatus('loading');
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          type,
+          courseName,
+          source: window.location.pathname, // capture the page URL as source
+        }),
+      });
+
+      if (!res.ok) throw new Error('Submission failed');
+
       setStatus('success');
       setFormData({ name: '', email: '', phone: '', message: '', schoolName: '' });
-    }, 1500);
+    } catch (error) {
+      console.error('Failed to submit form:', error);
+      alert('Failed to send message. Please try again.');
+      setStatus('idle');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

@@ -196,7 +196,7 @@ export default function NewCoursePage() {
                 value={formData.image}
                 onChange={e => setFormData({...formData, image: e.target.value})}
                 className="form-input" 
-                placeholder="/hero_bengali.png" 
+                placeholder="/hero_bengali.jpg" 
               />
             </div>
             <div className="space-y-2">
