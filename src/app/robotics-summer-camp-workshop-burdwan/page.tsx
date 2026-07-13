@@ -50,6 +50,7 @@ export default function SummerCampPage() {
               courseName="Robotics & AI Summer Boot-camp 2026"
               courseSlug="summer-camp-2026"
               paymentUrl="https://pages.razorpay.com/robotics-summer-camp-burdwan"
+              price="1000"
             />
             <p className="mt-4 text-white/60 text-sm font-medium">Pay just ₹1000 to reserve your seat (Total: ₹2300)</p>
           </div>
@@ -202,6 +203,7 @@ export default function SummerCampPage() {
                 courseName="Robotics & AI Summer Boot-camp 2026"
                 courseSlug="summer-camp-2026"
                 paymentUrl="https://pages.razorpay.com/robotics-summer-camp-burdwan"
+                price="1000"
               />
             </div>
           </div>

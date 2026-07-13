@@ -125,6 +125,7 @@ export default function CourseDetailPage() {
                     courseName={course.title} 
                     courseSlug={course.slug}
                     paymentUrl={course.paymentUrl}
+                    price={course.price}
                   />
                 ) : (
                   <Link href="#enroll" className="btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 text-center">
@@ -231,6 +232,7 @@ export default function CourseDetailPage() {
                     courseName={course.title} 
                     courseSlug={course.slug}
                     paymentUrl={course.paymentUrl}
+                    price={course.price}
                   />
                 </div>
               )}
@@ -351,6 +353,7 @@ export default function CourseDetailPage() {
                     courseName={course.title} 
                     courseSlug={course.slug}
                     paymentUrl={course.paymentUrl}
+                    price={course.price}
                   />
                 </div>
                 <p className="text-text/40 text-[10px] sm:text-xs mt-4">Your info is safe. Redirects to secure Razorpay payment.</p>
