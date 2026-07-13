@@ -98,14 +98,20 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
       }
 
       // First, get the order from our backend
-      // Parse numeric value from price string (e.g. "₹499" -> 499)
-      const numericPrice = price ? parseInt(price.replace(/[^0-9]/g, ''), 10) : 500;
+      // Parse numeric value from price string (e.g. "₹1,200" -> 1200)
+      const parsedMatch = price ? price.replace(/,/g, '').match(/\d+/) : null;
+      const numericPrice = parsedMatch ? parseInt(parsedMatch[0], 10) : 500;
       
+      let amountToCharge = numericPrice;
+      if (courseSlug === 'python') {
+        amountToCharge = 600; // First installment
+      }
+
       const orderResponse = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: numericPrice,
+          amount: amountToCharge,
           receipt: 'receipt_' + Date.now()
         }),
       });
@@ -239,6 +245,11 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
                     <h2 className="text-2xl font-bold mb-1">Almost There! 🎉</h2>
                     <p className="text-slate-500 text-sm">Enter your details to secure your spot in</p>
                     <p className="font-bold text-primary mt-1">{courseName}</p>
+                    {courseSlug === 'python' && (
+                      <p className="text-xs text-cta font-bold mt-2 bg-cta/10 inline-block px-3 py-1 rounded-full">
+                        First Installment: ₹600
+                      </p>
+                    )}
                   </div>
                 )}
 
