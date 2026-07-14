@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import clientPromise from '@/lib/mongodb';
 
+export const maxDuration = 60; // Set Vercel max duration to 60 seconds
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();

@@ -103,8 +103,12 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
       const numericPrice = parsedMatch ? parseInt(parsedMatch[0], 10) : 500;
       
       let amountToCharge = numericPrice;
-      if (courseSlug === 'python') {
-        amountToCharge = 600; // First installment
+      if (process.env.NEXT_PUBLIC_PAY_TEST === 'true') {
+        amountToCharge = 1;
+      } else {
+        if (courseSlug === 'python') {
+          amountToCharge = 600; // First installment
+        }
       }
 
       const orderResponse = await fetch('/api/razorpay/create-order', {
