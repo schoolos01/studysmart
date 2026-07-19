@@ -25,6 +25,7 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
   const [emailError, setEmailError] = useState('');
   const [phoneError, setPhoneError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState('');
 
@@ -37,6 +38,7 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
     setTimeout(() => {
       setDone(false);
       setLoading(false);
+      setVerifying(false);
       setError('');
       setName('');
       setEmail('');
@@ -137,7 +139,12 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
         order_id: orderData.id,
         handler: async function (response: any) {
           setLoading(true);
-          setError('Verifying payment... Please do not close this window.');
+          setVerifying(true);
+          setError('');
+          
+          // Add a halt timer to prevent quick exit and ensure backend sync
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          
           try {
             // Verify payment
             const verifyRes = await fetch('/api/razorpay/verify', {
@@ -152,14 +159,25 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
             });
             const verifyData = await verifyRes.json();
             if (verifyData.success) {
+              setVerifying(false);
               setDone(true);
             } else {
               setError('Payment verification failed.');
               setLoading(false);
+              setVerifying(false);
             }
           } catch (err) {
             setError('Payment verification failed.');
             setLoading(false);
+            setVerifying(false);
+          }
+        },
+        modal: {
+          confirm_close: true,
+          escape: false,
+          ondismiss: function () {
+            setLoading(false);
+            setVerifying(false);
           }
         },
         prefill: {
@@ -217,7 +235,7 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[9999] flex items-center justify-center p-6"
             style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}
-            onClick={e => e.target === e.currentTarget && handleClose()}
+            onClick={e => e.target === e.currentTarget && !loading && !verifying && handleClose()}
           >
             <motion.div
               initial={{ scale: 0.85, opacity: 0, y: 40 }}
@@ -230,12 +248,12 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
               <div className="h-3 w-full" style={{ background: 'linear-gradient(90deg, #6366F1, #8B5CF6, #EC4899)' }} />
 
               <div className="p-10">
-                <button onClick={handleClose} className="absolute top-6 right-6 p-2 rounded-xl hover:bg-slate-100 transition-all">
+                <button onClick={handleClose} disabled={loading || verifying} className={`absolute top-6 right-6 p-2 rounded-xl transition-all ${loading || verifying ? 'opacity-0 cursor-not-allowed pointer-events-none' : 'hover:bg-slate-100'}`}>
                   <X size={20} className="text-slate-400" />
                 </button>
 
                 {/* Icon + Heading */}
-                {!done && (
+                {!done && !verifying && (
                   <div className="text-center mb-8">
                     <motion.div
                       initial={{ scale: 0 }}
@@ -258,7 +276,24 @@ export default function EnrollModal({ courseName, courseSlug, paymentUrl, price 
                 )}
 
                 <AnimatePresence mode="wait">
-                  {done ? (
+                  {verifying ? (
+                    <motion.div
+                      key="verifying"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="text-center py-12"
+                    >
+                      <Loader2 size={48} className="animate-spin text-indigo-600 mx-auto mb-6" />
+                      <h3 className="text-2xl font-bold text-slate-800 mb-2">Verifying Payment...</h3>
+                      <p className="text-red-600 font-bold uppercase tracking-wider text-sm animate-pulse mt-4">
+                        ⚠️ DO NOT CLOSE OR REFRESH THIS PAGE
+                      </p>
+                      <p className="text-slate-500 text-sm mt-2">
+                        Please wait while we secure your registration.
+                      </p>
+                    </motion.div>
+                  ) : done ? (
                     <motion.div
                       key="success"
                       initial={{ opacity: 0, scale: 0.8 }}

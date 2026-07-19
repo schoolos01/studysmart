@@ -70,6 +70,11 @@ export async function POST(req: Request) {
       }
     } catch (workflowErr) {
       console.error('Error triggering workflow agent:', workflowErr);
+      // Update DB to reflect the network/fetch error
+      await db.collection('purchases').updateOne(
+        { razorpay_order_id },
+        { $set: { workflowStatus: 'failed', workflowError: String(workflowErr) } }
+      );
     }
 
     return NextResponse.json({ success: true, message: 'Payment verified successfully' });
